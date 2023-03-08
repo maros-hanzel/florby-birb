@@ -8,29 +8,34 @@ public class PipeSpawnScript : MonoBehaviour {
 
     public float spawnRate = 2;
 
-    private float timer = 0;
-    private float minSpawnBound;
-    private float maxSpawnBound;
+    private const float offset = 5;
 
-    void Start() {
+    private float _timer;
+    private float _minSpawnBound;
+    private float _maxSpawnBound;
+    private float _pipeSpawnPosX;
+
+    private void Start() {
         Vector2 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(
             Screen.width,
             Screen.height,
             Camera.main.transform.position.z
         ));
 
-        float offset = 5;
-        minSpawnBound = transform.position.y - screenBounds.y + offset;
-        maxSpawnBound = transform.position.y + screenBounds.y - offset;
+        _pipeSpawnPosX = screenBounds.x + 10;
+
+        float positionY = transform.position.y;
+        _minSpawnBound = positionY - screenBounds.y + offset;
+        _maxSpawnBound = positionY + screenBounds.y - offset;
     }
 
-    void Update() {
-        if ((timer += Time.deltaTime) >= spawnRate) {
-            timer = 0;
+    private void Update() {
+        if ((_timer += Time.deltaTime) < spawnRate) return;
 
-            float yPos = Random.Range(minSpawnBound, maxSpawnBound);
-            Vector3 pipePairPos = new Vector3(transform.position.x, yPos, 0);
-            Instantiate(pipePair, pipePairPos, transform.rotation);
-        }
+        _timer = 0;
+
+        float yPos = Random.Range(_minSpawnBound, _maxSpawnBound);
+        Vector3 pipePairPos = new (_pipeSpawnPosX, yPos, 0);
+        Instantiate(pipePair, pipePairPos, transform.rotation);
     }
 }

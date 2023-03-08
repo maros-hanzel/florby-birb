@@ -48,7 +48,7 @@ public class BirbScript : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        gameLogic.gameOver();
+        gameLogic.GameOver();
     }
 
     private void flapWing(bool flapped) {

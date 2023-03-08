@@ -409,6 +409,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quit Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""38c35bd5-5554-4e0c-9e82-3dfb9834f0b2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -851,6 +860,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Restart Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d43753a1-1034-499e-86ca-6591358717f3"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Quit Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -938,6 +958,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_StartGame = m_UI.FindAction("Start Game", throwIfNotFound: true);
         m_UI_RestartGame = m_UI.FindAction("Restart Game", throwIfNotFound: true);
+        m_UI_QuitGame = m_UI.FindAction("Quit Game", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1081,6 +1102,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_StartGame;
     private readonly InputAction m_UI_RestartGame;
+    private readonly InputAction m_UI_QuitGame;
     public struct UIActions
     {
         private @PlayerControls m_Wrapper;
@@ -1097,6 +1119,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @StartGame => m_Wrapper.m_UI_StartGame;
         public InputAction @RestartGame => m_Wrapper.m_UI_RestartGame;
+        public InputAction @QuitGame => m_Wrapper.m_UI_QuitGame;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1142,6 +1165,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartGame.started += instance.OnRestartGame;
             @RestartGame.performed += instance.OnRestartGame;
             @RestartGame.canceled += instance.OnRestartGame;
+            @QuitGame.started += instance.OnQuitGame;
+            @QuitGame.performed += instance.OnQuitGame;
+            @QuitGame.canceled += instance.OnQuitGame;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1182,6 +1208,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RestartGame.started -= instance.OnRestartGame;
             @RestartGame.performed -= instance.OnRestartGame;
             @RestartGame.canceled -= instance.OnRestartGame;
+            @QuitGame.started -= instance.OnQuitGame;
+            @QuitGame.performed -= instance.OnQuitGame;
+            @QuitGame.canceled -= instance.OnQuitGame;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1265,5 +1294,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnStartGame(InputAction.CallbackContext context);
         void OnRestartGame(InputAction.CallbackContext context);
+        void OnQuitGame(InputAction.CallbackContext context);
     }
 }

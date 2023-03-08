@@ -17,7 +17,7 @@ public class ScoreTriggerScript : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.layer == 3) {
-            gameLogic.addScore();
+            gameLogic.AddScore();
         }
     }
 }

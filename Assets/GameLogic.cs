@@ -7,7 +7,7 @@ using TMPro;
 
 public class GameLogic : MonoBehaviour {
 
-    public int playerScore = 0;
+    public int playerScore;
 
     public TextMeshProUGUI playerScoreText;
     public TextMeshProUGUI introText;
@@ -18,14 +18,15 @@ public class GameLogic : MonoBehaviour {
     public bool isDead { get; private set; } = false;
     public bool gameStarted { get; private set; } = false;
 
-    private PlayerControls playerControls;
-    private InputAction startGameAction;
-    private InputAction restartGameAction;
+    private PlayerControls _playerControls;
+    private InputAction _startGameAction;
+    private InputAction _restartGameAction;
+    private InputAction _quitGameAction;
 
     private Vector3 controlsTextInitialPosition;
 
     private void Awake() {
-        playerControls = new PlayerControls();
+        _playerControls = new PlayerControls();
         Time.timeScale = 0;
         Cursor.visible = false;
         playerScoreText.gameObject.SetActive(false);
@@ -34,27 +35,32 @@ public class GameLogic : MonoBehaviour {
     }
 
     private void OnEnable() {
-        startGameAction = playerControls.UI.StartGame;
-        startGameAction.performed += startGame;
-        startGameAction.Enable();
+        _startGameAction = _playerControls.UI.StartGame;
+        _startGameAction.performed += StartGame;
+        _startGameAction.Enable();
 
-        restartGameAction = playerControls.UI.RestartGame;
-        restartGameAction.performed += context => restartGame();
-        restartGameAction.Enable();
+        _restartGameAction = _playerControls.UI.RestartGame;
+        _restartGameAction.performed += _ => RestartGame();
+        _restartGameAction.Enable();
+
+        _quitGameAction = _playerControls.UI.QuitGame;
+        _quitGameAction.performed += _ => Application.Quit();
+        _quitGameAction.Enable();
     }
 
     private void OnDisable() {
-        startGameAction.Disable();
-        restartGameAction.Disable();
+        _startGameAction.Disable();
+        _restartGameAction.Disable();
+        _quitGameAction.Disable();
     }
 
-    public void addScore() {
+    public void AddScore() {
         playerScore += 1;
         Debug.Log("score = " + playerScore);
         playerScoreText.text = playerScore.ToString();
     }
 
-    public void gameOver() {
+    public void GameOver() {
         Debug.Log("Game Over");
         isDead = true;
         Time.timeScale = 0;
@@ -63,7 +69,7 @@ public class GameLogic : MonoBehaviour {
     }
 
     [ContextMenu("Restart Game")]
-    public void restartGame() {
+    public void RestartGame() {
         playerScore = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         isDead = false;
@@ -71,11 +77,11 @@ public class GameLogic : MonoBehaviour {
         introText.gameObject.SetActive(true);
     }
 
-    private void startGame(InputAction.CallbackContext context) {
+    private void StartGame(InputAction.CallbackContext context) {
         if (gameStarted) return;
         gameStarted = true;
         introText.gameObject.SetActive(false);
-        Time.timeScale = 1;
         playerScoreText.gameObject.SetActive(true);
+        Time.timeScale = 1;
     }
 }
