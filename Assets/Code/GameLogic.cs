@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class GameLogic : MonoBehaviour {
 
     public int playerScore;
+
+    public float textWobbleRange = 15;
+    public float textWobbleSpeed = 3;
 
     public TextMeshProUGUI playerScoreText;
     public TextMeshProUGUI introText;
@@ -15,23 +16,29 @@ public class GameLogic : MonoBehaviour {
     public TextMeshProUGUI restartText;
     public TextMeshProUGUI gameOverText;
 
-    public bool isDead { get; private set; } = false;
-    public bool gameStarted { get; private set; } = false;
+    private Vector3 _defaultControlsTextPosition;
+    private Vector3 _defaultRestartTextPosition;
 
     private PlayerControls _playerControls;
-    private InputAction _startGameAction;
-    private InputAction _restartGameAction;
     private InputAction _quitGameAction;
+    private InputAction _restartGameAction;
+    private InputAction _startGameAction;
 
-    private Vector3 controlsTextInitialPosition;
+    public bool IsPlayerDead { get; private set; }
+    public bool IsGameStarted { get; private set; }
 
     private void Awake() {
         _playerControls = new PlayerControls();
-        Time.timeScale = 0;
         Cursor.visible = false;
         playerScoreText.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
-        controlsTextInitialPosition = controlsText.transform.position;
+        _defaultControlsTextPosition = controlsText.transform.position;
+        _defaultRestartTextPosition = restartText.transform.position;
+    }
+
+    private void Update() {
+        controlsText.transform.position = CalculateWobblePosition(_defaultControlsTextPosition);
+        restartText.transform.position = CalculateWobblePosition(_defaultRestartTextPosition);
     }
 
     private void OnEnable() {
@@ -61,27 +68,28 @@ public class GameLogic : MonoBehaviour {
     }
 
     public void GameOver() {
-        Debug.Log("Game Over");
-        isDead = true;
-        Time.timeScale = 0;
+        IsPlayerDead = true;
         Cursor.visible = true;
         gameOverText.gameObject.SetActive(true);
     }
 
     [ContextMenu("Restart Game")]
     public void RestartGame() {
-        playerScore = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        isDead = false;
-        gameStarted = false;
+        playerScore = 0;
+        IsPlayerDead = false;
+        IsGameStarted = false;
         introText.gameObject.SetActive(true);
     }
 
     private void StartGame(InputAction.CallbackContext context) {
-        if (gameStarted) return;
-        gameStarted = true;
+        if (IsGameStarted) return;
+        IsGameStarted = true;
         introText.gameObject.SetActive(false);
         playerScoreText.gameObject.SetActive(true);
-        Time.timeScale = 1;
+    }
+
+    private Vector3 CalculateWobblePosition(Vector3 defaultPosition) {
+        return defaultPosition + Vector3.up * (Mathf.Sin(Time.time * textWobbleSpeed) * textWobbleRange);
     }
 }

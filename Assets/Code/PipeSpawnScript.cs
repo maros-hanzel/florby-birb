@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PipeSpawnScript : MonoBehaviour {
 
-    public GameObject pipePair;
+    private const float MinDistanceFromBounds = 5;
 
+    public GameObject pipePair;
+    public GameLogic gameLogic;
     public float spawnRate = 2;
 
-    private const float offset = 5;
+    private float _maxSpawnBound;
+    private float _minSpawnBound;
+    private float _pipeSpawnPosX;
 
     private float _timer;
-    private float _minSpawnBound;
-    private float _maxSpawnBound;
-    private float _pipeSpawnPosX;
 
     private void Start() {
         Vector2 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(
@@ -25,17 +24,16 @@ public class PipeSpawnScript : MonoBehaviour {
         _pipeSpawnPosX = screenBounds.x + 10;
 
         float positionY = transform.position.y;
-        _minSpawnBound = positionY - screenBounds.y + offset;
-        _maxSpawnBound = positionY + screenBounds.y - offset;
+        _minSpawnBound = positionY - screenBounds.y + MinDistanceFromBounds;
+        _maxSpawnBound = positionY + screenBounds.y - MinDistanceFromBounds;
     }
 
     private void Update() {
-        if ((_timer += Time.deltaTime) < spawnRate) return;
-
+        if (!gameLogic.IsGameStarted || (_timer += Time.deltaTime) < spawnRate) return;
         _timer = 0;
 
         float yPos = Random.Range(_minSpawnBound, _maxSpawnBound);
-        Vector3 pipePairPos = new (_pipeSpawnPosX, yPos, 0);
+        Vector3 pipePairPos = new(_pipeSpawnPosX, yPos, 0);
         Instantiate(pipePair, pipePairPos, transform.rotation);
     }
 }

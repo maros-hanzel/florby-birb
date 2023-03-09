@@ -245,7 +245,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -901.09656, y: -689.9009, z: -818.9949, w: 74.28342}
+  m_margin: {x: -901.09656, y: -689.9009, z: -818.9949, w: 199.94305}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -929,7 +929,7 @@ GameObject:
   - component: {fileID: 1085649761}
   - component: {fileID: 1085649762}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,6 +976,53 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 47.115494, y: 0.5370903}
   m_EdgeRadius: 0
+--- !u!1 &1149834080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1149834082}
+  - component: {fileID: 1149834081}
+  m_Layer: 0
+  m_Name: CloudSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1149834081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149834080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 035fb0b561ff44665af6fee1e63c1803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cloud: {fileID: 9068879203423028576, guid: 3fbe785b1ecbf49748ff1875df350b4b, type: 3}
+  initialSpawnCount: 2
+  spawnRate: 2
+--- !u!4 &1149834082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149834080}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1489334648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,6 +1053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipePair: {fileID: 5386465871619669975, guid: 5b6e5a7b9b9b54946b826380408281ab, type: 3}
+  gameLogic: {fileID: 2102730395}
   spawnRate: 1.2
 --- !u!4 &1489334650
 Transform:
@@ -1094,7 +1142,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 6f4d414963ac6481396e0fd832f74bea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1302,7 +1350,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 6f4d414963ac6481396e0fd832f74bea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1379,7 +1427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9ce2222670d4308b3c9d2fb4316c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 1941215629}
+  birbRigidBody: {fileID: 1941215629}
   gameLogic: {fileID: 2102730395}
   flapStrength: 22
 --- !u!114 &1941215631
@@ -1490,7 +1538,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &1950465962
 RectTransform:
@@ -1545,6 +1593,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerScore: 0
+  textWobbleRange: 4
+  textWobbleSpeed: 6.5
   playerScoreText: {fileID: 780989273}
   introText: {fileID: 141699760}
   controlsText: {fileID: 362891894}
