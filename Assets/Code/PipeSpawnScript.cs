@@ -29,7 +29,7 @@ public class PipeSpawnScript : MonoBehaviour {
     }
 
     private void Update() {
-        if (!gameLogic.IsGameStarted || (_timer += Time.deltaTime) < spawnRate) return;
+        if (!gameLogic.IsGameStarted || gameLogic.IsPlayerDead || (_timer += Time.deltaTime) < spawnRate) return;
         _timer = 0;
 
         float yPos = Random.Range(_minSpawnBound, _maxSpawnBound);
