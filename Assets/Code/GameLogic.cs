@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameLogic : MonoBehaviour {
 
+    public Renderer background;
+    public Renderer ground;
+
     public int playerScore;
 
     public float textWobbleRange = 15;
@@ -29,7 +32,6 @@ public class GameLogic : MonoBehaviour {
 
     private void Awake() {
         _playerControls = new PlayerControls();
-        Cursor.visible = false;
         playerScoreText.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
         _defaultControlsTextPosition = controlsText.transform.position;
@@ -37,8 +39,13 @@ public class GameLogic : MonoBehaviour {
     }
 
     private void Update() {
+        if (IsGameStarted) Cursor.visible = false;
         controlsText.transform.position = CalculateWobblePosition(_defaultControlsTextPosition);
         restartText.transform.position = CalculateWobblePosition(_defaultRestartTextPosition);
+
+        if (IsPlayerDead) return;
+        background.material.mainTextureOffset += Vector2.right * ((IsGameStarted ? 0.08f : 0.03f) * Time.deltaTime);
+        ground.material.mainTextureOffset += Vector2.right * ((IsGameStarted ? 0.255f : 0.15f) * Time.deltaTime);
     }
 
     private void OnEnable() {
